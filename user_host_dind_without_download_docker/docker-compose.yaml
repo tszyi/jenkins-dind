@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  jenkins:
+    image: jenkins:aors
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/icsc/tmp/jenkins_home:/var/jenkins_home
+      #- /home/icsc/.m2:/var/jenkins_home/.m2
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false

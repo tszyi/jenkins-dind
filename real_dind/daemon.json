@@ -1,0 +1,5 @@
+{
+  "insecure-registries": [
+    "minikube:5000"
+  ]
+}
