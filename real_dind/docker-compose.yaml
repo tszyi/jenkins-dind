@@ -2,8 +2,12 @@ version: "3"
 
 services:
   jenkins:
-    image: aors-jenkins:latest
+    image: tszyi/jenkins:latest
     privileged: true
     ports:
       - "8080:8080"
-
+      - "50000:50000"
+    volumes:
+      - ${HOST_JENKINS_HOME}:/var/jenkins_home
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
