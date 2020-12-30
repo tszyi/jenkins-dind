@@ -3,6 +3,8 @@ antisamy-markup-formatter:latest
 build-timeout:latest
 cloudbees-folder:latest
 credentials-binding:latest
+docker-commons:latest
+docker-workflow:latest
 email-ext:latest
 git:latest
 github-branch-source:latest

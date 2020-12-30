@@ -2,12 +2,13 @@ version: "3"
 
 services:
   jenkins:
-    image: tszyi/jenkins:latest
-    privileged: true
+    image: jenkins:tszyi
     ports:
       - "8080:8080"
       - "50000:50000"
+    privileged: true
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - ${HOST_JENKINS_HOME}:/var/jenkins_home
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false

@@ -1,17 +1,16 @@
 FROM jenkins/jenkins:lts
 
+ENV JAVA_OPTS -Djenkins.install.runSetupWizard=true
+
 USER root
 
 COPY plugins.txt /usr/share/jenkins/plugins.txt
-COPY entrypoint.sh .
-COPY daemon.json /etc/docker/
-COPY setup_admin.groovy /usr/share/jenkins/ref/init.groovy.d/
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/plugins.txt
 
-RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/plugins.txt \
-  && chmod ugo+rwx /entrypoint.sh \
-  && chmod ugo+rwx /etc/docker/daemon.json \
-  && chown -R 1000:1000 /etc/docker/daemon.json \
-  && apt-get update \
+ADD entrypoint.sh .
+RUN chmod ugo+rwx /entrypoint.sh
+
+RUN apt-get update \
   && apt-get install -y apt-transport-https \
   ca-certificates \
   gnupg-agent \
@@ -28,8 +27,11 @@ RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/plugins.txt \
   && usermod -aG docker jenkins \
   && apt-get clean \
   && rm -rf /var/cache/apt/lists \
-  && rm -rf /var/lib/apt/lists/* \
-  && echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
+  && rm -rf /var/lib/apt/lists/*
+
+COPY daemon.json /etc/docker/
+
+RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 
 USER jenkins
 
